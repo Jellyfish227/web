@@ -2,19 +2,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
-
+First time setup:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Start the development server:
+```bash
+docker compose up
+```
+
+To open the website automatically:
+```bash
+# On Linux
+docker compose up & sleep 10 && xdg-open http://localhost:3000
+
+# On macOS
+docker compose up & sleep 10 && open http://localhost:3000
+
+# On Windows
+docker compose up & sleep 10 && start http://localhost:3000
+```
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
