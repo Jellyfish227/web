@@ -12,6 +12,7 @@ interface ThreadPostProps extends Thread {
 }
 
 export function ThreadPost({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   id,
   username,
   userImage,

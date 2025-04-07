@@ -51,6 +51,7 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [newThreadIds, setNewThreadIds] = useState<Set<string>>(new Set());
   
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const currentUser = {
     username: "yourusername",
     userImage: "/images/user-avatar.jpg",

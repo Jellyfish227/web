@@ -14,6 +14,7 @@ interface ComposeThreadProps {
 
 export function ComposeThread({ 
   username, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userImage, 
   onSubmit, 
   typePlaceholder = false, 

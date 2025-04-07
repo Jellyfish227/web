@@ -4,10 +4,11 @@ export function useTypewriter(text: string, speed = 80, delay = 500) {
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [charIndex, setCharIndex] = useState(-1); // Start at -1 to properly handle first character
 
   useEffect(() => {
-    let startTimer: NodeJS.Timeout;
+    // let startTimer: NodeJS.Timeout;
     let typingInterval: NodeJS.Timeout;
     
     // Reset when text changes
@@ -16,7 +17,7 @@ export function useTypewriter(text: string, speed = 80, delay = 500) {
     setIsDone(false);
     
     // Initial delay before typing starts
-    startTimer = setTimeout(() => {
+    const startTimer = setTimeout(() => {
       setIsTyping(true);
       
       // Type each character one by one

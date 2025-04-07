@@ -1,5 +1,6 @@
 "use client";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useEffect } from "react";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { AppConfig } from "@/config/app-config";
