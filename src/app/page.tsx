@@ -2,60 +2,119 @@
 
 import { useState, useEffect } from "react";
 import { ThreadPost } from "@/components/thread/thread-post";
-
-// Helper function to generate unique IDs
-const generateUniqueId = () => `thread_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-// Mock data for initial threads
-const initialThreads = [
-  {
-    id: generateUniqueId(),
-    username: "janedoe",
-    userImage: "https://i.pravatar.cc/150?img=1",
-    content: "Just launched my new website! Check it out and let me know what you think. #webdev #design",
-    createdAt: "2h",
-    likes: 24,
-    replies: 5,
-    reposts: 2,
-  },
-  {
-    id: generateUniqueId(),
-    username: "johnsmith",
-    userImage: "https://i.pravatar.cc/150?img=2",
-    content: "I've been working on a new project using React and TypeScript. The type safety is amazing, but there's definitely a learning curve. Anyone else have experience with TypeScript?",
-    createdAt: "4h",
-    likes: 56,
-    replies: 12,
-    reposts: 4,
-  },
-  {
-    id: generateUniqueId(),
-    username: "sarahparker",
-    userImage: "https://i.pravatar.cc/150?img=3",
-    content: "Just got back from an amazing hike in the mountains. Nature is the best remedy for burnout. 🏔️",
-    createdAt: "6h",
-    likes: 102,
-    replies: 8,
-    reposts: 15,
-  },
-];
+import { initialThreads, generateUniqueId } from "@/data/initial-threads";
+import { Thread } from "@/types/thread";
 
 export default function Home() {
-  const [threads, setThreads] = useState(initialThreads);
+  // Create an expanded array with all threads repeated 3 times
+  const [allThreads] = useState<Thread[]>(() => {
+    const repeatedThreads: Thread[] = [];
+    
+    // Repeat all threads 3 times
+    for (let i = 0; i < 3; i++) {
+      initialThreads.forEach(thread => {
+        repeatedThreads.push({
+          ...thread,
+          id: `${thread.id}-rep-${i}` // Ensure unique IDs for each repetition
+        });
+      });
+    }
+    
+    // Add placeholder thread at the end
+    repeatedThreads.push({
+      id: generateUniqueId(),
+      username: "placeholder",
+      userImage: "",
+      content: "I am a fucking placeholder",
+      createdAt: new Date().toLocaleDateString(),
+      likes: 0,
+      replies: 0,
+      reposts: 0
+    });
+    
+    return repeatedThreads;
+  });
+  
+  const [visibleThreads, setVisibleThreads] = useState<Thread[]>([]);
+  const [loadingComplete, setLoadingComplete] = useState(false);
+  const [newThreadIds, setNewThreadIds] = useState<Set<string>>(new Set());
+  
   const currentUser = {
     username: "yourusername",
     userImage: "/images/user-avatar.jpg",
   };
+
+  // Load threads sequentially with a delay
+  useEffect(() => {
+    let threadIndex = 0;
+    const totalThreads = allThreads.length;
+
+    // Function to add the next thread
+    const addNextThread = () => {
+      if (threadIndex < totalThreads) {
+        const threadToAdd = allThreads[threadIndex];
+        setVisibleThreads(prev => [threadToAdd, ...prev]);
+        setNewThreadIds(prev => {
+          const updated = new Set(prev);
+          updated.add(threadToAdd.id);
+          return updated;
+        });
+        
+        threadIndex++;
+        
+        // If there are more threads to show, schedule the next one
+        if (threadIndex < totalThreads) {
+          setTimeout(addNextThread, 700); // 700ms delay
+        } else {
+          setLoadingComplete(true);
+        }
+      }
+    };
+
+    // Start the sequence
+    addNextThread();
+
+    // Cleanup function
+    return () => {
+      // No specific cleanup needed
+    };
+  }, [allThreads]);
+
+  // Check for loading completion and show alert
+  useEffect(() => {
+    if (loadingComplete) {
+      alert("All threads have been displayed! Check out Google: https://www.google.com");
+    }
+  }, [loadingComplete]); // This effect runs only when loadingComplete changes
+
+  // Clear animation flags after some time
+  useEffect(() => {
+    if (newThreadIds.size > 0) {
+      const timer = setTimeout(() => {
+        setNewThreadIds(new Set());
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [newThreadIds]);
 
   // Listen for thread created events from the layout
   useEffect(() => {
     const handleThreadCreated = (event: CustomEvent) => {
       const newThread = event.detail;
       // Check if thread with this ID already exists to prevent duplicates
-      setThreads(prevThreads => {
+      setVisibleThreads(prevThreads => {
         if (prevThreads.some(thread => thread.id === newThread.id)) {
           return prevThreads; // Thread already exists, don't add it
         }
+        
+        // Mark this thread as new for animation
+        setNewThreadIds(prev => {
+          const updated = new Set(prev);
+          updated.add(newThread.id);
+          return updated;
+        });
+        
         return [newThread, ...prevThreads];
       });
     };
@@ -74,9 +133,20 @@ export default function Home() {
       </header>
 
       <div>
-        {threads.map((thread) => (
-          <ThreadPost key={thread.id} {...thread} />
+        {visibleThreads.map((thread) => (
+          <ThreadPost 
+            key={thread.id} 
+            {...thread} 
+            isNew={newThreadIds.has(thread.id)}
+          />
         ))}
+        
+        {!loadingComplete && visibleThreads.length > 0 && (
+          <div className="p-4 text-center text-gray-400">
+            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></div>
+            <p className="mt-2">Loading more threads...</p>
+          </div>
+        )}
       </div>
     </div>
   );

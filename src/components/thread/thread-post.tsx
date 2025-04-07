@@ -3,16 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Repeat2, Send } from "lucide-react";
 import Link from "next/link";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { Thread } from "@/types/thread";
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-interface ThreadPostProps {
-  id: string;
-  username: string;
-  userImage?: string;
-  content: string;
-  createdAt: string;
-  likes: number;
-  replies: number;
-  reposts: number;
+interface ThreadPostProps extends Thread {
+  isNew?: boolean;
 }
 
 export function ThreadPost({
@@ -24,12 +20,33 @@ export function ThreadPost({
   likes,
   replies,
   reposts,
+  isNew = false,
 }: ThreadPostProps) {
   const isCurrentUser = username === "yourusername";
+  const [animate, setAnimate] = useState(isNew);
+  
+  // Reset animation state after it completes
+  useEffect(() => {
+    if (animate) {
+      const timer = setTimeout(() => {
+        setAnimate(false);
+      }, 1000); // Match this to animation duration
+      
+      return () => clearTimeout(timer);
+    }
+  }, [animate]);
 
   return (
-    <div className="border-b border-gray-700 p-4 bg-gray-800">
-      <div className="flex gap-3">
+    <div 
+      className={cn(
+        "border-b border-gray-700 p-4 bg-gray-800 relative overflow-hidden transition-all duration-500",
+        animate ? "animate-thread-appear" : ""
+      )}
+    >
+      {animate && (
+        <div className="absolute inset-0 bg-white/5 animate-thread-highlight" />
+      )}
+      <div className="flex gap-3 relative z-10">
         <div className="flex-shrink-0">
           {isCurrentUser ? (
             <UserAvatar username={username} />

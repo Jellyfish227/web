@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Home, Search, Heart, User } from "lucide-react";
 import { NewThreadDialog } from "@/components/thread/new-thread-dialog";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { AppConfig } from "@/config/app-config";
+import { Settings } from "@/components/settings";
 
 interface SidebarProps {
   username: string;
@@ -21,7 +23,7 @@ export function Sidebar({ username, userImage, onCreateThread }: SidebarProps) {
 
   return (
     <div className="h-screen border-r border-gray-700 w-[250px] py-4 px-3 flex flex-col bg-gray-800">
-      <div className="mb-6 pl-2">
+      <div className="mb-6 pl-2 flex items-center justify-between">
         <svg viewBox="0 0 24 24" aria-hidden="true" className="h-8 w-8 text-white">
           <path
             fillRule="evenodd"
@@ -30,6 +32,7 @@ export function Sidebar({ username, userImage, onCreateThread }: SidebarProps) {
             fill="currentColor"
           />
         </svg>
+        <Settings />
       </div>
       <nav className="flex-1">
         <ul className="space-y-2">
@@ -55,6 +58,7 @@ export function Sidebar({ username, userImage, onCreateThread }: SidebarProps) {
           username={username}
           userImage={userImage}
           onSubmit={onCreateThread}
+          autoOpen={AppConfig.autoOpenNewThreadDialog}
         />
       </div>
     </div>

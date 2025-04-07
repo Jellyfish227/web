@@ -10,16 +10,40 @@ import {
 import { Button } from "@/components/ui/button";
 import { PenSquare } from "lucide-react";
 import { ComposeThread } from "./compose-thread";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { AppConfig } from "@/config/app-config";
 
 interface NewThreadDialogProps {
   username: string;
   userImage?: string;
   onSubmit: (content: string) => void | Promise<void>;
+  autoOpen?: boolean; // Allow prop override of config
 }
 
-export function NewThreadDialog({ username, userImage, onSubmit }: NewThreadDialogProps) {
+export function NewThreadDialog({ 
+  username, 
+  userImage, 
+  onSubmit,
+  autoOpen 
+}: NewThreadDialogProps) {
   const [open, setOpen] = useState(false);
+  const [autoOpened, setAutoOpened] = useState(false);
+  
+  // Determine if auto-open should be enabled
+  const shouldAutoOpen = autoOpen !== undefined ? autoOpen : AppConfig.autoOpenNewThreadDialog;
+
+  // Open dialog automatically on component mount if auto-open is enabled
+  useEffect(() => {
+    if (!shouldAutoOpen) return;
+    
+    // Short delay to ensure component is fully rendered
+    const timer = setTimeout(() => {
+      setOpen(true);
+      setAutoOpened(true);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [shouldAutoOpen]);
 
   const handleSubmit = async (content: string) => {
     try {
@@ -43,7 +67,13 @@ export function NewThreadDialog({ username, userImage, onSubmit }: NewThreadDial
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(newOpen) => {
+      // Only allow programmatic changes to override auto-opening once
+      if (!newOpen && autoOpened) {
+        setAutoOpened(false);
+      }
+      setOpen(newOpen);
+    }}>
       <DialogTrigger asChild>
         <Button className="w-full gap-2">
           <PenSquare className="h-4 w-4" />
@@ -59,6 +89,8 @@ export function NewThreadDialog({ username, userImage, onSubmit }: NewThreadDial
             username={username}
             userImage={userImage}
             onSubmit={handleSubmit}
+            typePlaceholder={true}
+            placeholderText="this is a placeholder"
           />
         </div>
       </DialogContent>

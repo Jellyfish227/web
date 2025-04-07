@@ -3,6 +3,8 @@
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { useState } from "react";
+import { generateUniqueId } from "@/data/initial-threads";
+import { Thread } from "@/types/thread";
 
 // Default user info
 const currentUser = {
@@ -10,21 +12,18 @@ const currentUser = {
   userImage: "/images/user-avatar.jpg", // This will point to the uploaded image
 };
 
-// Helper function to generate unique IDs
-const generateUniqueId = () => `thread_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [threads, setThreads] = useState<any[]>([]);
+  const [threads, setThreads] = useState<Thread[]>([]);
 
   const handleCreateThread = (content: string) => {
     // Simulate API delay
     return new Promise<void>((resolve) => {
       setTimeout(() => {
-        const newThread = {
+        const newThread: Thread = {
           id: generateUniqueId(),
           username: currentUser.username,
           userImage: currentUser.userImage,
