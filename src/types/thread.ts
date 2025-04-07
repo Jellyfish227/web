@@ -12,7 +12,7 @@ export interface Thread {
   userImage?: string;
   
   /** Text content of the thread */
-  content: string;
+  content: React.ReactNode;
   
   /** Human-readable time since the thread was created */
   createdAt: string;

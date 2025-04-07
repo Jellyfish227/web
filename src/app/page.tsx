@@ -25,7 +25,19 @@ export default function Home() {
       id: generateUniqueId(),
       username: "placeholder",
       userImage: "",
-      content: "I am a fucking placeholder",
+      content: (
+        <span>
+          I am a fucking placeholder,{" "}
+          <a 
+            href="https://www.google.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: 'red', textDecoration: 'underline' }}
+          >
+            www.google.com
+          </a>
+        </span>
+      ),
       createdAt: new Date().toLocaleDateString(),
       likes: 0,
       replies: 0,
