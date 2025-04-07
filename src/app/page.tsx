@@ -80,13 +80,6 @@ export default function Home() {
     };
   }, [allThreads]);
 
-  // Check for loading completion and show alert
-  useEffect(() => {
-    if (loadingComplete) {
-      alert("All threads have been displayed! Check out Google: https://www.google.com");
-    }
-  }, [loadingComplete]); // This effect runs only when loadingComplete changes
-
   // Clear animation flags after some time
   useEffect(() => {
     if (newThreadIds.size > 0) {
