@@ -10,7 +10,7 @@ export default function Home() {
     const threads: Thread[] = [...initialThreads]; // Use the initial threads directly
     threads.push({
       id: generateUniqueId(),
-      username: "placeholder",
+      username: "Anti Misogyny on Internet",
       userImage: "",
       content: (
         <span>
