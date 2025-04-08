@@ -111,8 +111,10 @@ export default function Home() {
         return [newThread, ...prevThreads];
       });
 
-      // Start loading initial threads after the new thread is added
-      setStartLoading(true);
+      // Start loading initial threads 5 seconds after the new thread is added
+      setTimeout(() => {
+        setStartLoading(true);
+      }, 5000); // 2000ms delay
     };
 
     window.addEventListener("thread:created", handleThreadCreated as EventListener);
