@@ -7,16 +7,8 @@ import { Thread } from "@/types/thread";
 
 export default function Home() {
   const [allThreads] = useState<Thread[]>(() => {
-    const repeatedThreads: Thread[] = [];
-    for (let i = 0; i < 2; i++) {
-      initialThreads.forEach(thread => {
-        repeatedThreads.push({
-          ...thread,
-          id: `${thread.id}-rep-${i}`
-        });
-      });
-    }
-    repeatedThreads.push({
+    const threads: Thread[] = [...initialThreads]; // Use the initial threads directly
+    threads.push({
       id: generateUniqueId(),
       username: "placeholder",
       userImage: "",
@@ -38,7 +30,7 @@ export default function Home() {
       replies: 0,
       reposts: 0
     });
-    return repeatedThreads;
+    return threads;
   });
 
   const [visibleThreads, setVisibleThreads] = useState<Thread[]>([]);
