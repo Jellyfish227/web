@@ -90,7 +90,7 @@ export function NewThreadDialog({
             userImage={userImage}
             onSubmit={handleSubmit}
             typePlaceholder={true}
-            placeholderText="this is a placeholder"
+            placeholderText="爲什麼網上的人這麼討厭女生？"
           />
         </div>
       </DialogContent>
