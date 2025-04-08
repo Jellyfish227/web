@@ -6,7 +6,7 @@ export const AppConfig = {
   /**
    * Controls whether the new thread dialog automatically opens on page load
    */
-  autoOpenNewThreadDialog: false,
+  autoOpenNewThreadDialog: true,
   
   /**
    * Default typing animation configuration
