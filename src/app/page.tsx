@@ -111,10 +111,10 @@ export default function Home() {
         return [newThread, ...prevThreads];
       });
 
-      // Start loading initial threads 5 seconds after the new thread is added
+      // Start loading initial threads 3 seconds after the new thread is added
       setTimeout(() => {
         setStartLoading(true);
-      }, 5000); // 2000ms delay
+      }, 3000); // 3000ms delay
     };
 
     window.addEventListener("thread:created", handleThreadCreated as EventListener);
@@ -138,13 +138,6 @@ export default function Home() {
             isNew={newThreadIds.has(thread.id)}
           />
         ))}
-
-        {!loadingComplete && visibleThreads.length > 0 && (
-          <div className="p-4 text-center text-gray-400">
-            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></div>
-            <p className="mt-2">Loading more threads...</p>
-          </div>
-        )}
       </div>
     </div>
   );
