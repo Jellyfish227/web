@@ -63,7 +63,7 @@ export default function Home() {
         threadIndex++;
 
         if (threadIndex < totalThreads) {
-          setTimeout(addNextThread, 700); // 700ms delay
+          setTimeout(addNextThread, 1000); // 700ms delay
         } else {
           setLoadingComplete(true);
         }
