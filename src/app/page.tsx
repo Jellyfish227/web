@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useState, useEffect } from "react";
 import { ThreadPost } from "@/components/thread/thread-post";
 import { initialThreads, generateUniqueId } from "@/data/initial-threads";
@@ -36,6 +37,7 @@ export default function Home() {
   const [visibleThreads, setVisibleThreads] = useState<Thread[]>([]);
   const [newThreadIds, setNewThreadIds] = useState<Set<string>>(new Set());
   const [startLoading, setStartLoading] = useState(false); // New state to control loading
+  const [loadingComplete, setLoadingComplete] = useState(false); // Added state
  
   // Load threads sequentially with a delay
   useEffect(() => {
