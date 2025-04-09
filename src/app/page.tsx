@@ -34,15 +34,9 @@ export default function Home() {
   });
 
   const [visibleThreads, setVisibleThreads] = useState<Thread[]>([]);
-  const [loadingComplete, setLoadingComplete] = useState(false);
   const [newThreadIds, setNewThreadIds] = useState<Set<string>>(new Set());
   const [startLoading, setStartLoading] = useState(false); // New state to control loading
-
-  const currentUser = {
-    username: "yourusername",
-    userImage: "/images/user-avatar.jpg",
-  };
-
+ 
   // Load threads sequentially with a delay
   useEffect(() => {
     if (!startLoading) return; // Only start loading when the flag is true
