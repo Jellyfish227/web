@@ -14,14 +14,14 @@ export default function Home() {
       userImage: "",
       content: (
         <span>
-          I am a placeholder,{" "}
+          如果你也有遇過這些經歷，想知道更多——{" "}
           <a 
-            href="https://www.google.com" 
+            href="https://gender3007web.wixsite.com/anti-misogyny" 
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ color: 'red', textDecoration: 'underline' }}
           >
-            www.google.com
+            不如看看這裏？
           </a>
         </span>
       ),
